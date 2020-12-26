@@ -1,0 +1,37 @@
+class Solution {
+public:
+    unordered_map<int, int> store;
+    
+    int Permute(string& s, int l) {
+        int res = 0;
+        if (l == s.size()) {
+            return 1;
+        }
+        
+        if (s[l] == 0 or s[l] == '0')
+            return 0;
+        
+        if (l == s.size() - 1) {
+            return 1;
+        }
+        
+        if (store.find(l) != store.end())
+            return store[l];
+        
+        res += Permute(s, l+1);
+        if(((s[l]-'0')*10) + (s[l+1]-'0') <= 26) {
+            res += Permute(s, l+2);
+        }
+        
+        store.emplace(l, res);
+        
+        return res;
+    }
+    
+    int numDecodings(string s) {
+        int res = 0;
+        if (s.size())
+            res = Permute(s, 0);
+        return res;
+    }
+};
